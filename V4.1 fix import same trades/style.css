@@ -1,0 +1,222 @@
+/* ===== THEME VARIABLES ===== */
+:root {
+    --bg-color: #f4f7f9;
+    --primary-bg-color: #ffffff;
+    --secondary-bg-color: #f4f7f9;
+    --tertiary-bg-color: #ecf0f1;
+    --primary-text-color: #2c3e50;
+    --secondary-text-color: #7f8c8d;
+    --border-color: #ddd;
+    --accent-color: #3498db;
+    --accent-hover-color: #2980b9;
+    --positive-color: #27ae60;
+    --negative-color: #c0392b;
+    --shadow-color: rgba(0,0,0,0.05);
+    --modal-overlay-color: rgba(0,0,0,0.6);
+    --lightbox-img-bg: #333;
+}
+
+body.dark-mode {
+    --bg-color: #1a1a1a;
+    --primary-bg-color: #2b2b2b;
+    --secondary-bg-color: #1a1a1a;
+    --tertiary-bg-color: #3c3c3c;
+    --primary-text-color: #ecf0f1;
+    --secondary-text-color: #bdc3c7;
+    --border-color: #444;
+    --accent-color: #3498db;
+    --accent-hover-color: #5dade2;
+    --positive-color: #2ecc71; /* Brighter green for dark bg */
+    --negative-color: #e74c3c; /* Already bright red */
+    --shadow-color: rgba(0,0,0,0.2);
+    --modal-overlay-color: rgba(0,0,0,0.85);
+    --lightbox-img-bg: #111;
+}
+
+/* General Body and Layout Styles */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--primary-text-color);
+    margin: 0;
+    padding: 15px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* Header and Theme Switcher */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+h1 { color: var(--primary-text-color); font-size: 24px; margin: 0; }
+.header-actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+
+/* Add these to your style.css */
+
+.paste-area {
+    min-height: 50px;
+    border: 2px dashed var(--border-color);
+    border-radius: 5px;
+    padding: 10px;
+    margin-top: 10px;
+    background-color: var(--tertiary-bg-color);
+    color: var(--secondary-text-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 14px;
+    cursor: text;
+    position: relative; /* For placeholder */
+    overflow: hidden; /* To contain pasted image */
+}
+
+/* Placeholder for contenteditable */
+[contenteditable="true"]:empty:before {
+    content: attr(placeholder);
+    color: var(--secondary-text-color);
+    display: block; /* For Opera */
+}
+
+.paste-area img {
+    max-width: 100%;
+    max-height: 150px; /* Limit height inside paste area */
+    object-fit: contain;
+    display: block;
+    margin: auto;
+}
+
+.clear-paste-btn {
+    background-color: #e74c3c; /* Red color */
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    margin-top: 5px;
+    transition: background-color 0.3s;
+    width: auto; /* Override 100% width from form styles */
+    align-self: flex-start; /* Align to left */
+}
+.clear-paste-btn:hover {
+    background-color: #c0392b;
+}
+
+/* Ensure hidden class works */
+.hidden {
+    display: none !important;
+}
+
+.theme-switcher { display: inline-block; position: relative; width: 50px; height: 26px; }
+.theme-switcher input { opacity: 0; width: 0; height: 0; }
+.slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 26px; }
+.slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
+input:checked + .slider { background-color: var(--accent-color); }
+input:checked + .slider:before { transform: translateX(24px); }
+
+/* Buttons and Controls */
+#addTradeBtn, #exportBtn, .import-label { background-color: var(--accent-color); color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; font-size: 14px; transition: background-color 0.3s; text-align: center; }
+#addTradeBtn:hover, #exportBtn:hover, .import-label:hover { background-color: var(--accent-hover-color); }
+
+/* Analytics Dashboard */
+#analyticsDashboard { background-color: var(--primary-bg-color); padding: 20px; border-radius: 8px; margin-bottom: 25px; box-shadow: 0 2px 4px var(--shadow-color); }
+#analyticsDashboard h2 { margin-top: 0; color: var(--primary-text-color); text-align: center; margin-bottom: 20px; }
+.dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+.stat-card { background-color: var(--secondary-bg-color); padding: 15px; border-radius: 5px; text-align: center; }
+.stat-card h4 { margin: 0 0 10px 0; color: var(--secondary-text-color); font-weight: normal; font-size: 14px; }
+.stat-card p { margin: 0; font-size: 22px; font-weight: bold; color: var(--primary-text-color); }
+
+/* Main Content: Calendar and Filters */
+.controls-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 15px; }
+.month-header { display: flex; align-items: center; }
+#currentMonth { color: var(--primary-text-color); margin: 0 15px; font-size: 20px; }
+#prevMonthBtn, #nextMonthBtn { background: none; border: none; font-size: 24px; cursor: pointer; color: var(--accent-color); }
+#strategyFilters { display: flex; flex-wrap: wrap; gap: 10px; }
+.filter-btn { background-color: var(--tertiary-bg-color); color: var(--secondary-text-color); border: 1px solid var(--border-color); padding: 8px 15px; border-radius: 20px; cursor: pointer; font-size: 14px; transition: all 0.3s; }
+.filter-btn.active { background-color: var(--accent-color); color: white; border-color: var(--accent-color); }
+
+#calendar { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; }
+.day { padding: 10px; border: 1px solid var(--border-color); min-height: 80px; background-color: var(--primary-bg-color); position: relative; cursor: pointer; transition: background-color 0.3s; display: flex; flex-direction: column; font-size: 12px; }
+.day:hover { background-color: var(--tertiary-bg-color); }
+.day .day-number { font-weight: bold; font-size: 14px; color: var(--primary-text-color); }
+.day .daily-pnl {
+    font-size: 14px;
+    font-weight: bold;
+    align-self: center;  /* Horizontally centers the element */
+    text-align: center;  /* Ensures text inside is centered */
+    margin-top: auto;    /* Pushes it down from the day number */
+    padding-bottom: 5px; /* Adds a little space from the bottom edge */
+    padding-top: 5px;    /* Adds a little space from the number */
+}
+.positive { color: var(--positive-color); }
+.negative { color: var(--negative-color); }
+.other-month { background-color: var(--tertiary-bg-color); color: var(--secondary-text-color); }
+
+/* Daily Trades List & Cards */
+#dailyTrades { margin-top: 20px; }
+#tradesList { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; }
+.trade-card { background-color: var(--primary-bg-color); border: 1px solid var(--border-color); border-radius: 8px; padding: 20px; display: flex; flex-direction: column; }
+.trade-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+.trade-card-header h4 { margin: 0; font-size: 16px; background-color: var(--tertiary-bg-color); padding: 5px 10px; border-radius: 15px; font-weight: normal; color: var(--primary-text-color); }
+.trade-card .pnl-value { font-size: 20px; font-weight: bold; }
+.trade-card .notes-section { background-color: var(--secondary-bg-color); border-left: 3px solid var(--accent-color); padding: 15px; margin: 15px 0; border-radius: 4px; white-space: pre-wrap; font-size: 14px; color: var(--primary-text-color); }
+.trade-card .image-container { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 10px; }
+.trade-card img { max-width: 100%; border-radius: 5px; border: 1px solid var(--border-color); cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; }
+.trade-card img:hover { transform: scale(1.03); box-shadow: 0 4px 15px var(--shadow-color); }
+.trade-card-actions { margin-top: 15px; align-self: flex-end; display: flex; gap: 10px; }
+.action-btn { background: none; border: 1px solid var(--secondary-text-color); color: var(--secondary-text-color); padding: 5px 10px; cursor: pointer; border-radius: 5px; transition: all 0.3s; }
+.edit-btn:hover { background-color: #f1c40f; color: white; border-color: #f1c40f; }
+.delete-btn:hover { background-color: #e74c3c; color: white; border-color: #e74c3c; }
+
+/* Modal and Form Styles */
+.modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: var(--modal-overlay-color); }
+.modal-content { background-color: var(--primary-bg-color); color: var(--primary-text-color); margin: 5% auto; padding: 25px; border: 1px solid var(--border-color); width: 90%; max-width: 600px; border-radius: 8px; position: relative; }
+.close-button.modal-close { color: var(--secondary-text-color); position: absolute; top: 10px; right: 20px; font-size: 28px; font-weight: bold; }
+.close-button.modal-close:hover { color: var(--primary-text-color); cursor: pointer; }
+#tradeForm { display: flex; flex-direction: column; }
+#tradeForm label { margin-top: 15px; font-weight: bold; color: var(--primary-text-color); }
+#tradeForm input, #tradeForm textarea, #tradeForm button { padding: 12px; margin-top: 5px; border-radius: 5px; border: 1px solid var(--border-color); font-size: 16px; width: 100%; box-sizing: border-box; background-color: var(--secondary-bg-color); color: var(--primary-text-color); }
+#tradeForm textarea { resize: vertical; }
+#tradeForm button { background-color: var(--accent-color); color: white; border: none; cursor: pointer; margin-top: 20px; }
+#tradeForm button:hover { background-color: var(--accent-hover-color); }
+.preview { max-width: 100%; max-height: 200px; margin-top: 10px; display: none; border: 1px dashed var(--border-color); padding: 5px; }
+
+/* Back to Calendar Button */
+#backToCalendarBtn { margin-top: 20px; background-color: var(--accent-color); color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-size: 16px; transition: background-color 0.3s; }
+#backToCalendarBtn:hover { background-color: var(--accent-hover-color); }
+
+.hidden { display: none; }
+
+/* Lightbox Styles */
+.modal#imageLightbox { padding: 0; background-color: var(--modal-overlay-color); }
+.lightbox-content { display: flex; flex-direction: row; width: 100%; height: 100%; background-color: var(--primary-bg-color); margin: 0; padding: 0; border-radius: 0; box-shadow: none; align-items: stretch; position: relative; top: 0; transform: none; }
+.lightbox-close { position: absolute; top: 15px; right: 25px; color: #fff; background-color: rgba(0,0,0,0.3); border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-size: 30px; font-weight: bold; z-index: 1002; transition: all 0.3s; line-height: 1; text-decoration: none; }
+.lightbox-close:hover { background-color: var(--negative-color); transform: rotate(90deg); }
+.lightbox-details { flex: 0 0 350px; padding: 20px; background-color: var(--primary-bg-color); overflow-y: auto; display: flex; flex-direction: column; }
+.lightbox-details h3 { margin-top: 0; color: var(--primary-text-color); border-bottom: 2px solid var(--tertiary-bg-color); padding-bottom: 10px; }
+.lightbox-details p { font-size: 16px; line-height: 1.6; color: var(--primary-text-color); }
+.lightbox-details .notes-section { flex-grow: 1; background-color: var(--secondary-bg-color); padding: 15px; border-radius: 4px; white-space: pre-wrap; font-size: 15px; margin-top: 10px; color: var(--primary-text-color); }
+.lightbox-image-container { flex-grow: 1; display: flex; justify-content: center; align-items: center; background-color: var(--lightbox-img-bg); padding: 15px; }
+#lightboxImage { max-width: 100%; max-height: 100%; border-radius: 5px; object-fit: contain; }
+
+/* Media Queries for Responsiveness */
+@media (max-width: 1024px) { .lightbox-details { flex: 0 0 300px; } }
+@media (max-width: 768px) {
+    body { padding: 10px; }
+    h1 { font-size: 20px; }
+    .controls-header, .month-header, .header-actions { flex-direction: column; align-items: stretch; width: 100%; }
+    .header-actions { align-items: flex-start; }
+    .dashboard-grid { grid-template-columns: 1fr; }
+    .trade-card .image-container { grid-template-columns: 1fr; }
+    .lightbox-content { flex-direction: column; }
+    .lightbox-details { flex: 0 0 auto; max-height: 40vh; border-right: none; border-bottom: 1px solid var(--border-color); }
+    .lightbox-image-container { padding: 10px; }
+    .lightbox-close { color: var(--primary-text-color); background-color: var(--primary-bg-color); box-shadow: 0 0 10px var(--shadow-color); }
+}

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Forex Trade Journal</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>My Forex Trade Journal</h1>
+        <div class="header-actions">
+             <!-- Theme Switcher -->
+            <div class="theme-switcher">
+                <input type="checkbox" id="themeToggle">
+                <label for="themeToggle" class="slider"></label>
+            </div>
+            <button id="addTradeBtn">Add New Trade</button>
+            <button id="exportBtn">Export Data</button>
+            <label for="importFile" class="import-label">Import Data</label>
+            <input type="file" id="importFile" accept=".json,.xlsx" style="display: none;">
+        </div>
+    </header>
+
+    <main>
+        <!-- Analytics Dashboard Section -->
+        <section id="analyticsDashboard">
+            <h2>Analytics Dashboard</h2>
+            <div class="dashboard-grid">
+                <div class="stat-card">
+                    <h4>Net P/L</h4>
+                    <p id="netPnl">$0.00</p>
+                </div>
+                <div class="stat-card">
+                    <h4>Win / Loss Ratio</h4>
+                    <p id="winLossRatio">N/A</p>
+                </div>
+                <div class="stat-card">
+                    <h4>Avg. Win / Avg. Loss</h4>
+                    <p id="avgWinLoss">$0 / $0</p>
+                </div>
+                <div class="stat-card">
+                    <h4>Profit Factor</h4>
+                    <p id="profitFactor">N/A</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Calendar View -->
+        <section id="monthlyOverview">
+            <div class="controls-header">
+                <div class="month-header">
+                    <button id="prevMonthBtn">&lt;</button>
+                    <h2 id="currentMonth"></h2>
+                    <button id="nextMonthBtn">&gt;</button>
+                </div>
+                <div id="strategyFilters">
+                    <button class="filter-btn active" data-strategy="all">All Strategies</button>
+                </div>
+            </div>
+            <div id="calendar"></div>
+        </section>
+
+        <!-- Daily Trades Detail View -->
+        <section id="dailyTrades" class="hidden">
+            <h3 id="selectedDay"></h3>
+            <div id="tradesList"></div>
+            <button id="backToCalendarBtn">Back to Calendar</button>
+        </section>
+    </main>
+
+    <!-- Pop-up Modal for Adding/Editing Trades -->
+    <div id="tradeModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button modal-close">&times;</span>
+            <h2 id="modalTitle">Record a New Trade</h2>
+            <form id="tradeForm">
+                <input type="hidden" id="tradeId"> <h2 id="modalTitle">Record a New Trade</h2>
+
+                <label for="tradeDate">Date:</label>
+                <input type="date" id="tradeDate" required>
+
+                <label for="pnl">Net P&L ($):</label>
+                <input type="number" id="pnl" step="0.01" required>
+
+                <label for="pips">Pips:</label>
+                <input type="number" id="pips" step="0.1">
+
+                <label for="openingDirection">Direction:</label>
+                <select id="openingDirection">
+                    <option value="">Select Direction</option>
+                    <option value="Buy">Buy</option>
+                    <option value="Sell">Sell</option>
+                </select>
+
+                <label for="entryPrice">Entry Price:</label>
+                <input type="number" id="entryPrice" step="0.00001">
+
+                <label for="closingPrice">Closing Price:</label>
+                <input type="number" id="closingPrice" step="0.00001">
+
+                <label for="closingQuantity">Closing Quantity:</label>
+                <input type="number" id="closingQuantity" step="0.01">
+
+                <label for="swap">Swap:</label>
+                <input type="number" id="swap" step="0.01">
+
+                <label for="commission">Commission:</label>
+                <input type="number" id="commission" step="0.01">
+
+                <label for="grossProfit">Gross Profit ($):</label>
+                <input type="number" id="grossProfit" step="0.01">
+
+                <label for="openingTimeDisplay">Opening Time (from cTrader):</label>
+                <input type="text" id="openingTimeDisplay" readonly class="imported-detail">
+
+                <label for="closingTimeDisplay">Closing Time (from cTrader):</label>
+                <input type="text" id="closingTimeDisplay" readonly class="imported-detail">
+
+                <label for="strategy">Strategy:</label>
+                <input type="text" id="strategy" placeholder="e.g., Breakout, Trend">
+
+                <label for="notes">Notes:</label>
+                <textarea id="notes" rows="4" placeholder="Detailed notes about the trade..."></textarea>
+
+                <div class="image-upload-section">
+                    <div class="image-input-group">
+                        <label for="entryImage">Entry Screenshot:</label>
+                        <input type="file" id="entryImage" accept="image/*">
+                        <div class="paste-area" id="entryPasteArea" contenteditable="true" placeholder="Paste image here"></div>
+                        <button type="button" class="clear-paste-btn hidden" data-target="entry">Clear</button>
+                        <img id="entryPreview" src="#" alt="Entry Preview" style="display:none;">
+                    </div>
+                    <div class="image-input-group">
+                        <label for="exitImage">Exit Screenshot:</label>
+                        <input type="file" id="exitImage" accept="image/*">
+                        <div class="paste-area" id="exitPasteArea" contenteditable="true" placeholder="Paste image here"></div>
+                        <button type="button" class="clear-paste-btn hidden" data-target="exit">Clear</button>
+                        <img id="exitPreview" src="#" alt="Exit Preview" style="display:none;">
+                    </div>
+                </div>
+
+                <button type="submit">Save Trade</button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Image Lightbox Modal -->
+    <div id="imageLightbox" class="modal">
+        <span class="close-button lightbox-close">&times;</span>
+        <div class="lightbox-content">
+            <div class="lightbox-details">
+                <h3>Trade Details</h3>
+                <p><strong>P/L:</strong> <span id="lightboxPnl"></span></p>
+                <p><strong>Strategy:</strong> <span id="lightboxStrategy"></span></p>
+                <p><strong>Notes:</strong></p>
+                <div id="lightboxNotes" class="notes-section"></div>
+            </div>
+            <div class="lightbox-image-container">
+                <img id="lightboxImage" src="#" alt="Full-size Trade Image">
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
